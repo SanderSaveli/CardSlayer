@@ -12,6 +12,7 @@ public class PlayingCard : IPlayingCard
         this.suit = card.suit;
         this.value = card.value;
         this.isFaceDown = isFaceDown;
+        isUnlock = true;
     }
     public Suits suit { get; private set; }
 
@@ -23,22 +24,26 @@ public class PlayingCard : IPlayingCard
 
     public bool isFaceDown { get; private set; }
 
-    public bool isUnlock { get { return isUnlock; } 
-        private set { 
-            if(value != isUnlock) 
+    public bool isUnlock
+    {
+        get { return _isUnlock; }
+        private set
+        {
+            if (value != _isUnlock)
             {
-                isUnlock = value;
-                if (isUnlock) 
+                _isUnlock = value;
+                if (_isUnlock)
                 {
                     OnCardUnlock?.Invoke();
                 }
-                else 
+                else
                 {
                     OnCardLock?.Invoke();
                 }
             }
-        } 
+        }
     }
+    private bool _isUnlock;
 
     public void TopCardRemoved()
     {
@@ -59,26 +64,39 @@ public class PlayingCard : IPlayingCard
         if (bottomCard != null)
         {
             bottomCard.TopCardRemoved();
-            bottomCard = card;
         }
+        bottomCard = card;
     }
-    public bool TryReplaceCard(IPlayingCard card)
+    public bool TryPutCardOnTop(IPlayingCard card)
     {
-        if (card.value - 1 == value)
+        if (card.value == value -1)
         {
-            PlaceCard(card);
+            TopCardPutted(card);
             if (card.suit != suit)
             {
-                isUnlock = false;
+                LockCard();
             }
             return true;
         }
         return false;
     }
 
-    public void PlaceCard(IPlayingCard card)
+    public void TopCardPutted(IPlayingCard card)
     {
         card.BottomCardChanged(this);
         topCard = card;
+        if (card.value != value -1 || card.suit != suit)
+        {
+            LockCard();
+        }
+    }
+
+    public void LockCard()
+    {
+        isUnlock = false;
+        if (bottomCard != null && bottomCard.isUnlock)
+        {
+            bottomCard.LockCard();
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace CardSystem
         public GameObject viewPrefab;
         [SerializeField] public GameObject[] emptySlots;
         [SerializeField] private int _cardsInEachSet;
+        [SerializeField] Canvas canvas;
 
         private List<ICardView> _cardViews;
 
@@ -32,14 +33,14 @@ namespace CardSystem
             {
                 CreateCardViews(cardsCount - _cardViews.Count);
             }
-
             for (int i = 0; i < _cardsInEachSet; i++)
             {
-                foreach (ICardPlaceholder stack in topOfCardStacks)
+                for (int j = 0; j < topOfCardStacks.Count; j++)
                 {
                     cardsCount--;
-                    _cardViews[cardsCount].card = new PlayingCard(deck.GetTopCard(), false);
-                    stack.TryPlaceCard(_cardViews[cardsCount]);
+                    _cardViews[cardsCount].card = new PlayingCard(deck.GetTopCard(), i== _cardsInEachSet-1? false: true);
+                    topOfCardStacks[j].TryPlaceCard(_cardViews[cardsCount]);
+                    topOfCardStacks[j] = (ICardPlaceholder)_cardViews[cardsCount];
                 }
             }
 
@@ -47,7 +48,7 @@ namespace CardSystem
         private void GenerateDeck()
         {
             List<ICard> cardsInDeck = new();
-            for (int i = 1; i < 14; i++)
+            for (int i = 1; i < 10; i++)
             {
                 for (int j = 0; j < 4; j++)
                 {
@@ -61,7 +62,7 @@ namespace CardSystem
         {
             for (int i = 0; i < count; i++)
             {
-                ICardView newView = Instantiate(viewPrefab).GetComponent<ICardView>();
+                ICardView newView = Instantiate(viewPrefab, canvas.transform).GetComponent<ICardView>();
                 _cardViews.Add(newView);
             }
         }

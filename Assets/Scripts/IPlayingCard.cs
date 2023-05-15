@@ -21,10 +21,12 @@ namespace CardSystem
 
         public void TopCardRemoved();
 
-        public bool TryReplaceCard(IPlayingCard card);
+        public bool TryPutCardOnTop(IPlayingCard card);
 
-        public void PlaceCard(IPlayingCard card);
+        public void TopCardPutted(IPlayingCard card);
 
         public void BottomCardChanged(IPlayingCard card);
+
+        public void LockCard();
     }
 }
