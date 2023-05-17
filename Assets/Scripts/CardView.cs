@@ -29,6 +29,8 @@ namespace CardSystem
         private SmoothMove smoothMove;
         private SmoothFoolowParent followParent;
 
+        private Vector3 _positionBeforeDrag;
+
         private void Awake()
         {
             image = GetComponent<Image>();
@@ -84,7 +86,7 @@ namespace CardSystem
                 transform.SetAsLastSibling();
                 image.raycastTarget = false;
                 smoothMove.StopMove();
-                //followParent.StopFollow();
+                followParent.StopFollow();
             }
         }
 
@@ -98,11 +100,10 @@ namespace CardSystem
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            image.raycastTarget = true;
-            placeholder.UpdateCardPosition(this);
             if (card.isUnlock)
             {
-               // followParent.StartFollow();
+                image.raycastTarget = true;
+                placeholder.UpdateCardPosition(this);
             }
         }
 
@@ -115,7 +116,6 @@ namespace CardSystem
                     TryReplaceCard(cardView);
                 }
             }
-
         }
 
         private void NewCardSetted()

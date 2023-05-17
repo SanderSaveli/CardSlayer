@@ -1,8 +1,9 @@
+using System.Collections;
 using UnityEngine;
 
 public class SmoothFoolowParent : MonoBehaviour
 {
-    [SerializeField] private float step = .05f;
+    [SerializeField] private float step = 0.5f;
 
     private Vector3 startLocalPos, lastFramePos, lastDesiredPos, fromPos;
     private Quaternion startLocalRot, lastFrameRot, lastDesiredRot, fromRot;
@@ -13,7 +14,6 @@ public class SmoothFoolowParent : MonoBehaviour
     private bool _isFollow;
     public void StartFollow() 
     {
-        _isFollow = true;
         startLocalPos = transform.localPosition;
         startLocalRot = transform.localRotation;
 
@@ -21,6 +21,8 @@ public class SmoothFoolowParent : MonoBehaviour
         lastFrameRot = transform.rotation;
 
         constZ_Pos = startLocalPos.z;
+        _isFollow = true;
+        StartCoroutine(FollowParent());
     }
 
     public void StopFollow() 
@@ -28,10 +30,10 @@ public class SmoothFoolowParent : MonoBehaviour
         _isFollow = false;
     }
 
-    void Update()
+    private IEnumerator FollowParent() 
     {
-        if (_isFollow) 
-        { 
+        while (_isFollow) 
+        {
             Vector3 newDesiredPos = transform.parent.TransformPoint(startLocalPos);
             Quaternion newDesiredRot = transform.parent.rotation * startLocalRot;
 
@@ -53,13 +55,13 @@ public class SmoothFoolowParent : MonoBehaviour
                 lastFramePos = Vector3.Lerp(fromPos, newDesiredPos, percent);
                 lastFrameRot = Quaternion.Lerp(fromRot, newDesiredRot, percent);
 
-                Vector3 newLocalPos = transform.parent.TransformPoint(lastFramePos);
+                Vector3 newLocalPos = transform.parent.InverseTransformPoint(lastFramePos);
                 newLocalPos.z = constZ_Pos;
 
                 transform.localPosition = newLocalPos;
                 transform.rotation = lastFrameRot;
             }
+            yield return null;
         }
-
     }
 }

@@ -21,6 +21,7 @@ public class SmoothMove : MonoBehaviour
     public void StopMove() 
     {
         _isMoving = false;
+        followParent.StartFollow();
     }
 
     private void FixedUpdate()
@@ -34,7 +35,6 @@ public class SmoothMove : MonoBehaviour
             else 
             {
                 StopMove();
-                followParent.StartFollow();
             }
         }
     }

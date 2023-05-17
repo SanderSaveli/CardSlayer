@@ -1,5 +1,4 @@
 using CardSystem;
-using UnityEngine;
 
 public class PlayingCard : IPlayingCard
 {
@@ -69,14 +68,17 @@ public class PlayingCard : IPlayingCard
     }
     public bool TryPutCardOnTop(IPlayingCard card)
     {
-        if (card.value == value -1)
+        if (card.isUnlock)
         {
-            TopCardPutted(card);
-            if (card.suit != suit)
+            if (card.value == value - 1)
             {
-                LockCard();
+                TopCardPutted(card);
+                if (card.suit != suit)
+                {
+                    LockCard();
+                }
+                return true;
             }
-            return true;
         }
         return false;
     }
@@ -85,7 +87,7 @@ public class PlayingCard : IPlayingCard
     {
         card.BottomCardChanged(this);
         topCard = card;
-        if (card.value != value -1 || card.suit != suit)
+        if (card.value != value - 1 || card.suit != suit)
         {
             LockCard();
         }
@@ -103,7 +105,7 @@ public class PlayingCard : IPlayingCard
     public void UnlockCard()
     {
         isUnlock = true;
-        if (bottomCard != null && bottomCard.suit == suit && bottomCard.value-1 == value)
+        if (bottomCard != null && bottomCard.suit == suit && bottomCard.value - 1 == value && bottomCard.isUnlock)
         {
             bottomCard.UnlockCard();
         }
