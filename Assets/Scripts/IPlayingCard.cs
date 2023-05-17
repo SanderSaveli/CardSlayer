@@ -28,5 +28,7 @@ namespace CardSystem
         public void BottomCardChanged(IPlayingCard card);
 
         public void LockCard();
+
+        public void UnlockCard();   
     }
 }

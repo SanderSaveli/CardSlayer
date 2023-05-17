@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 namespace CardSystem 
 { 
@@ -8,6 +9,6 @@ namespace CardSystem
         public IPlayingCard card { get; set; }
 
         public ICardPlaceholder placeholder { get; set; }
-        public void MoveCard(Vector2 position);
+        public void MoveCard(Vector3 position);
     }
 }

@@ -12,7 +12,7 @@ public class PlayingCard : IPlayingCard
         this.suit = card.suit;
         this.value = card.value;
         this.isFaceDown = isFaceDown;
-        isUnlock = true;
+        isUnlock = !isFaceDown;
     }
     public Suits suit { get; private set; }
 
@@ -50,7 +50,7 @@ public class PlayingCard : IPlayingCard
         topCard = null;
         if (!isUnlock)
         {
-            isUnlock = true;
+            UnlockCard();
         }
 
         if (isFaceDown)
@@ -97,6 +97,15 @@ public class PlayingCard : IPlayingCard
         if (bottomCard != null && bottomCard.isUnlock)
         {
             bottomCard.LockCard();
+        }
+    }
+
+    public void UnlockCard()
+    {
+        isUnlock = true;
+        if (bottomCard != null && bottomCard.suit == suit && bottomCard.value-1 == value)
+        {
+            bottomCard.UnlockCard();
         }
     }
 }

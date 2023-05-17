@@ -45,8 +45,8 @@ namespace CardSystem
             foreach (T card in _cardsOutDeck)
             {
                 _cardsInDeck.Add(card);
-                _cardsOutDeck.Remove(card);
             }
+            _cardsOutDeck.Clear();
         }
     }
 

@@ -5,16 +5,11 @@ namespace CardSystem
 {
     public class CardPlaceholder : MonoBehaviour, ICardPlaceholder, IDropHandler
     {
-        private RectTransform _rectTransform;
-
-        public CardPlaceholder(RectTransform rectTransform)
-        {
-            _rectTransform = rectTransform;
-        }
+        public  RectTransform rectTransform { get; private set; }
 
         private void Awake()
         {
-            _rectTransform = gameObject.GetComponent<RectTransform>();
+            rectTransform = gameObject.GetComponent<RectTransform>();
         }
         public bool TryPlaceCard(ICardView cardView)
         {
@@ -31,9 +26,7 @@ namespace CardSystem
 
         public void UpdateCardPosition(ICardView cardView)
         {
-            cardView.rectTransform.SetParent(_rectTransform);
-            cardView.rectTransform.localPosition = Vector3.zero;
-            cardView.placeholder = this;
+            CardFitter.FitCard(cardView, this, Vector2.zero); 
         }
 
         public void OnDrop(PointerEventData eventData)

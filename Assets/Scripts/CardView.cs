@@ -25,13 +25,17 @@ namespace CardSystem
         private Image image;
         private Canvas canvas;
         private float top—ardOffset = 15f;
-        private Vector3 _positionBeforeDrag;
+
+        private SmoothMove smoothMove;
+        private SmoothFoolowParent followParent;
 
         private void Awake()
         {
             image = GetComponent<Image>();
             rectTransform = GetComponent<RectTransform>();
             canvas = GameObject.FindGameObjectWithTag("CardCanvas").GetComponent<Canvas>();
+            smoothMove = GetComponent<SmoothMove>();
+            followParent = GetComponent<SmoothFoolowParent>();
         }
 
         private void OnDisable()
@@ -44,9 +48,9 @@ namespace CardSystem
             }
         }
 
-        public void MoveCard(Vector2 position)
+        public void MoveCard(Vector3 position)
         {
-            rectTransform.position = position;
+            smoothMove.MoveTo(position);
         }
 
         public bool TryReplaceCard(ICardView cardView)
@@ -67,6 +71,11 @@ namespace CardSystem
             return true;
         }
 
+        public void UpdateCardPosition(ICardView cardView)
+        {
+            CardFitter.FitCard(cardView, this, new Vector2(0, -top—ardOffset));
+        }
+
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (card.isUnlock)
@@ -74,6 +83,8 @@ namespace CardSystem
                 transform.SetParent(canvas.transform);
                 transform.SetAsLastSibling();
                 image.raycastTarget = false;
+                smoothMove.StopMove();
+                //followParent.StopFollow();
             }
         }
 
@@ -87,12 +98,24 @@ namespace CardSystem
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (card.isUnlock)
-            {
-                rectTransform.localPosition = _positionBeforeDrag;
-            }
             image.raycastTarget = true;
             placeholder.UpdateCardPosition(this);
+            if (card.isUnlock)
+            {
+               // followParent.StartFollow();
+            }
+        }
+
+        public void OnDrop(PointerEventData eventData)
+        {
+            if (card.isUnlock)
+            {
+                if (eventData.pointerDrag.gameObject.TryGetComponent(out ICardView cardView))
+                {
+                    TryReplaceCard(cardView);
+                }
+            }
+
         }
 
         private void NewCardSetted()
@@ -173,24 +196,6 @@ namespace CardSystem
                     return CardValues.king.ToString();
             }
             return "";
-        }
-        public void OnDrop(PointerEventData eventData)
-        {
-            if (card.isUnlock)
-            {
-                if (eventData.pointerDrag.gameObject.TryGetComponent(out ICardView cardView))
-                {
-                    TryReplaceCard(cardView);
-                }
-            }
-
-        }
-
-        public void UpdateCardPosition(ICardView cardView)
-        {
-            cardView.rectTransform.SetParent(rectTransform);
-            cardView.rectTransform.localPosition = new Vector3(0, -top—ardOffset, 0);
-            cardView.placeholder = this;
         }
     }
 }
