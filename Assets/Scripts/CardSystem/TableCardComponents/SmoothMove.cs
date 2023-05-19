@@ -2,26 +2,18 @@ using UnityEngine;
 
 public class SmoothMove : MonoBehaviour
 {
+    public int _speed = 6;
     private Vector3 _targetPosition;
     private bool _isMoving = false;
-
-    private SmoothFoolowParent followParent;
-
-    private void Awake()
-    {
-        followParent = GetComponent<SmoothFoolowParent>();
-    }
     public void MoveTo(Vector3 Position)
     {
         _targetPosition = Position;
         _isMoving = true;
-        followParent.StopFollow();
     }
 
     public void StopMove() 
     {
         _isMoving = false;
-        followParent.StartFollow();
     }
 
     private void FixedUpdate()
@@ -30,7 +22,7 @@ public class SmoothMove : MonoBehaviour
         {
             if(transform.localPosition != _targetPosition) 
             {
-                transform.localPosition = Vector3.Lerp(transform.localPosition, _targetPosition, 6 * Time.deltaTime);
+                transform.localPosition = Vector3.Lerp(transform.localPosition, _targetPosition, _speed * Time.deltaTime);
             }
             else 
             {

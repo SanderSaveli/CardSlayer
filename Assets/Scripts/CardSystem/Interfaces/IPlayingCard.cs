@@ -13,6 +13,9 @@ namespace CardSystem
 
         public delegate void CardUnlocked();
         public event CardUnlocked OnCardUnlock;
+
+        public delegate void PutTopCard(IPlayingCard card);
+        public event PutTopCard OnTopCardPutted;
         #endregion
         public IPlayingCard topCard { get; }
         public IPlayingCard bottomCard { get; }

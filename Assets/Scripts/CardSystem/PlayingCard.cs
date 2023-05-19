@@ -5,6 +5,7 @@ public class PlayingCard : IPlayingCard
     public event IPlayingCard.CardTurned OnCardTurned;
     public event IPlayingCard.CardUnlocked OnCardUnlock;
     public event IPlayingCard.CardLocked OnCardLock;
+    public event IPlayingCard.PutTopCard OnTopCardPutted;
 
     public PlayingCard(ICard card, bool isFaceDown)
     {
@@ -91,6 +92,7 @@ public class PlayingCard : IPlayingCard
         {
             LockCard();
         }
+        OnTopCardPutted?.Invoke(card);
     }
 
     public void LockCard()

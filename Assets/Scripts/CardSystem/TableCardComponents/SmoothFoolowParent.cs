@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SmoothFoolowParent : MonoBehaviour
 {
-    [SerializeField] private float step = 0.5f;
+    [SerializeField] private float step = 0.2f;
 
     private Vector3 startLocalPos, lastFramePos, lastDesiredPos, fromPos;
     private Quaternion startLocalRot, lastFrameRot, lastDesiredRot, fromRot;

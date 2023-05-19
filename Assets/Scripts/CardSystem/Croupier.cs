@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.iOS;
 
 namespace CardSystem
 {
@@ -15,7 +14,7 @@ namespace CardSystem
 
         private Deck<ICard> _deck;
         private List<ICardPlaceholder> _startSlots = new();
-        private List<ICardView> _cardViews = new();
+        private List<ITableCard> _tableCards = new();
 
         private void Start()
         {
@@ -33,18 +32,18 @@ namespace CardSystem
                 topOfCardStacks.Add(slot);
             }
             int cardsCount = topOfCardStacks.Count * _cardsInEachSlot;
-            if (_cardViews.Count < cardsCount)
+            if (_tableCards.Count < cardsCount)
             {
-                CreateCardViews(cardsCount - _cardViews.Count);
+                CreateCardViews(cardsCount - _tableCards.Count);
             }
             for (int i = 0; i < _cardsInEachSlot; i++)
             {
                 for (int j = 0; j < topOfCardStacks.Count; j++)
                 {
                     cardsCount--;
-                    _cardViews[cardsCount].card = new PlayingCard(_deck.GetTopCard(), i== _cardsInEachSlot-1? false: true);
-                    topOfCardStacks[j].TryPlaceCard(_cardViews[cardsCount]);
-                    topOfCardStacks[j] = (ICardPlaceholder)_cardViews[cardsCount];
+                    _tableCards[cardsCount].SetNewCard(new PlayingCard(_deck.GetTopCard(), i== _cardsInEachSlot-1? false: true));
+                    topOfCardStacks[j].TryPlaceCard(_tableCards[cardsCount]);
+                    topOfCardStacks[j] = _tableCards[cardsCount].TopCardPlace;
                 }
             }
 
@@ -91,18 +90,18 @@ namespace CardSystem
         {
             for (int i = 0; i < count; i++)
             {
-                ICardView newView = Instantiate(viewPrefab, canvas.transform).GetComponent<ICardView>();
-                _cardViews.Add(newView);
+                ITableCard newCard = Instantiate(viewPrefab, canvas.transform).GetComponent<ITableCard>();
+                _tableCards.Add(newCard);
             }
         }
 
         private void TakeAllCardsFromTable() 
         {
             _deck.ReturnAllCardsToDeck();
-            foreach(ICardView cardView in _cardViews) 
+            foreach(ITableCard tableCard in _tableCards) 
             {
-                cardView.rectTransform.SetParent(transform);
-                cardView.rectTransform.localPosition = Vector3.zero;
+                tableCard.rectTransform.SetParent(transform);
+                tableCard.rectTransform.localPosition = Vector3.zero;
             }
         }
     }

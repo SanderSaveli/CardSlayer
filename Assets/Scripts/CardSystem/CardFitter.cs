@@ -4,7 +4,7 @@ namespace CardSystem
 {
     public static class CardFitter
     {
-        public static void FitCard(ICardView cardView, ICardPlaceholder placeholder, Vector2 offset)
+        public static void FitCard(ITableCard cardView, ICardPlaceholder placeholder, Vector2 offset)
         {
             cardView.rectTransform.SetParent(placeholder.rectTransform);
             cardView.MoveCard((Vector3) offset);
