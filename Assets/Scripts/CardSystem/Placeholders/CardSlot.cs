@@ -7,26 +7,30 @@ namespace CardSystem
     {
         public  RectTransform rectTransform { get; private set; }
 
+        public ITableCard tableCard { get; private set; }
+
         private void Awake()
         {
             rectTransform = gameObject.GetComponent<RectTransform>();
         }
-        public bool TryPlaceCard(ITableCard cardView)
+        public bool TryPlaceCard(ITableCard tableCard)
         {
-            UpdateCardPosition(cardView);
+            UpdateCardPosition(tableCard);
+            this.tableCard = tableCard;
             return true;
         }
 
-        public bool TryReplaceCard(ITableCard cardView)
+        public bool TryReplaceCard(ITableCard tableCard)
         {
-            UpdateCardPosition(cardView);
-            cardView.card.BottomCardChanged(null);
+            UpdateCardPosition(tableCard);
+            tableCard.card.BottomCardChanged(null);
+            this.tableCard = tableCard;
             return true;
         }
 
-        public void UpdateCardPosition(ITableCard cardView)
+        public void UpdateCardPosition(ITableCard tableCard)
         {
-            CardFitter.FitCard(cardView, this, Vector2.zero); 
+            CardFitter.FitCard(tableCard, this, Vector2.zero); 
         }
 
         public void OnDrop(PointerEventData eventData)

@@ -8,6 +8,8 @@ namespace CardSystem
         [SerializeField] private Croupier croupier;
         public RectTransform rectTransform { get; private set; }
 
+        public ITableCard tableCard { get; private set; }
+
         public void OnDrop(PointerEventData eventData)
         {
             if (eventData.pointerDrag.gameObject.TryGetComponent(out ITableCard cardView))
@@ -27,13 +29,13 @@ namespace CardSystem
             { 
                 IPlayingCard curr = cardView.card;
                 int count = 0;
-                while(curr != null) 
-                {
-                    count++;
-                    curr = curr.topCard;
-                }
+                //while(curr != null) 
+                //{
+                    //count++;
+                    //curr = curr.topCard;
+                //}
                 Debug.Log("You deal " + count + " damage!");
-                croupier.Deal—ards();
+                croupier.DealRandom—ards();
                 return true;
             }
             return false;

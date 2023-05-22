@@ -3,27 +3,47 @@ using UnityEngine;
 
 namespace CardSystem
 {
+    [System.Serializable]
     public class Deck<T> where T : ICard
     {
-        private List<T> _cardsInDeck;
-        private List<T> _cardsOutDeck;
-        public Deck(List<T> cardsInDeck)
+        [SerializeField]
+        public Queue<T> _cardsInDeck { get; set; }
+        [SerializeField]
+        public List<T> _cardsOutDeck { get; set; }
+        public Deck() 
+        { 
+        
+        }
+        public Deck(Queue<T> cardsInDeck)
         {
             _cardsInDeck = new(cardsInDeck);
             _cardsOutDeck = new();
         }
+        public Deck(Queue<T> cardsInDeck, List<T> cardsOutDeck)
+        {
+            _cardsInDeck = new(cardsInDeck);
+            _cardsOutDeck = cardsOutDeck;
+        }
 
         public void Shuffle()
         {
-            System.Random rand = new System.Random();
-            int n = _cardsInDeck.Count;
+            System.Random random = new System.Random();
+            List<T> values = new List<T>(_cardsInDeck);
+
+            int n = values.Count;
             while (n > 1)
             {
-                int k = rand.Next(n);
                 n--;
-                T temp = _cardsInDeck[k];
-                _cardsInDeck[k] = _cardsInDeck[n];
-                _cardsInDeck[n] = temp;
+                int k = random.Next(n + 1);
+                T value = values[k];
+                values[k] = values[n];
+                values[n] = value;
+            }
+
+            _cardsInDeck.Clear();
+            foreach (T value in values)
+            {
+                _cardsInDeck.Enqueue(value);
             }
         }
 
@@ -31,8 +51,7 @@ namespace CardSystem
         {
             if (_cardsInDeck.Count > 0)
             {
-                T temp = _cardsInDeck[0];
-                _cardsInDeck.Remove(temp);
+                T temp = _cardsInDeck.Dequeue();
                 _cardsOutDeck.Add(temp);
                 return temp;
             }
@@ -44,11 +63,8 @@ namespace CardSystem
         {
             foreach (T card in _cardsOutDeck)
             {
-                _cardsInDeck.Add(card);
+                _cardsInDeck.Enqueue(card);
             }
-            _cardsOutDeck.Clear();
         }
     }
-
-
 }

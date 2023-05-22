@@ -8,6 +8,7 @@ namespace CardSystem
         public delegate void CardPutted(ITableCard card);
         public event CardPutted OnCardPutted;
         public RectTransform rectTransform { get; private set; }
+        public ITableCard tableCard { get; private set; }
         private float topCardOffset = 15f;
         public IPlayingCard card;
 
@@ -15,29 +16,31 @@ namespace CardSystem
         {
             rectTransform = GetComponent<RectTransform>();
         }
-        public bool TryReplaceCard(ITableCard card)
+        public bool TryReplaceCard(ITableCard tableCard)
         {
-            if (this.card.TryPutCardOnTop(card.card))
+            if (card.TryPutCardOnTop(tableCard.card))
             {
-                UpdateCardPosition(card);
-                OnCardPutted?.Invoke(card);
+                UpdateCardPosition(tableCard);
+                OnCardPutted?.Invoke(tableCard);
+                this.tableCard = tableCard;
                 return true;
             }
             return false;
         }
 
 
-        public bool TryPlaceCard(ITableCard card)
+        public bool TryPlaceCard(ITableCard tableCard)
         {
-            this.card.TopCardPutted(card.card);
-            UpdateCardPosition(card);
-            OnCardPutted?.Invoke(card);
+            card.TopCardPutted(tableCard.card);
+            UpdateCardPosition(tableCard);
+            OnCardPutted?.Invoke(tableCard);
+            this.tableCard = tableCard;
             return true;
         }
 
-        public void UpdateCardPosition(ITableCard card)
+        public void UpdateCardPosition(ITableCard tableCard)
         {
-            CardFitter.FitCard(card, this, new Vector2(0, -topCardOffset));
+            CardFitter.FitCard(tableCard, this, new Vector2(0, -topCardOffset));
         }
 
 
