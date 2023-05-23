@@ -33,7 +33,7 @@ namespace SaveSystem
             }
             foreach (SavebleCard card in _cardsOutDeck) 
             {
-                cardsInDeck.Enqueue(card.Get());
+                cardsOutDeck.Add(card.Get());
             }
             return new Deck<ICard>(cardsInDeck, cardsOutDeck);
         }

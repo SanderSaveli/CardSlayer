@@ -29,11 +29,11 @@ namespace CardSystem
             { 
                 IPlayingCard curr = cardView.card;
                 int count = 0;
-                //while(curr != null) 
-                //{
-                    //count++;
-                    //curr = curr.topCard;
-                //}
+                while(curr != null) 
+                {
+                    count++;
+                    curr = curr.topCard;
+                }
                 Debug.Log("You deal " + count + " damage!");
                 croupier.DealRandom—ards();
                 return true;

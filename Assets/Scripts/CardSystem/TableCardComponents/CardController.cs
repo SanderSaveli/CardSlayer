@@ -38,6 +38,7 @@ namespace CardSystem
                 card.OnCardTurned -= TurnOnCard;
                 card.OnCardUnlock -= UnlockCard;
                 card.OnCardLock -= LockCard;
+                card.OnTopCardRemoved -= TopCardRemoved;
             }
             _move.OnCardStartMove -= CardStartMove;
             _move.OnCardEndMove -= CardEndMove;
@@ -51,10 +52,12 @@ namespace CardSystem
             card.OnCardUnlock += UnlockCard;
             card.OnCardTurned += TurnOnCard;
             card.OnCardLock += LockCard;
+            card.OnTopCardRemoved += TopCardRemoved;
             if (card.isUnlock) 
             {
                 _move.isMoving = true;
             }
+            _move.StopFollowParent();
         }
 
         public void MoveCard(Vector3 position)
@@ -95,6 +98,10 @@ namespace CardSystem
         private void TopCardPutted(ITableCard card)
         {
             nextCard = card;
+        }
+        private void TopCardRemoved() 
+        {
+            nextCard = null;
         }
 
         private void CardStartMove() 

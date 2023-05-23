@@ -22,7 +22,7 @@ namespace CardSystem
         public Deck(Queue<T> cardsInDeck, List<T> cardsOutDeck)
         {
             _cardsInDeck = new(cardsInDeck);
-            _cardsOutDeck = cardsOutDeck;
+            _cardsOutDeck = new(cardsOutDeck);
         }
 
         public void Shuffle()
@@ -31,6 +31,7 @@ namespace CardSystem
             List<T> values = new List<T>(_cardsInDeck);
 
             int n = values.Count;
+            Debug.Log(n);
             while (n > 1)
             {
                 n--;
@@ -65,6 +66,7 @@ namespace CardSystem
             {
                 _cardsInDeck.Enqueue(card);
             }
+            _cardsOutDeck.Clear();
         }
     }
 }

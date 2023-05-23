@@ -22,6 +22,7 @@ public class SmoothFoolowParent : MonoBehaviour
 
         constZ_Pos = startLocalPos.z;
         _isFollow = true;
+        StopCoroutine(FollowParent());
         StartCoroutine(FollowParent());
     }
 

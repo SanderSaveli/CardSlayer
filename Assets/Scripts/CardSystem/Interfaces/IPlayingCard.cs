@@ -16,8 +16,12 @@ namespace CardSystem
 
         public delegate void PutTopCard(IPlayingCard card);
         public event PutTopCard OnTopCardPutted;
+
+        public delegate void RemoveTopCard();
+        public event RemoveTopCard OnTopCardRemoved;
         #endregion
         public IPlayingCard bottomCard { get; }
+        public IPlayingCard topCard { get; }
         public bool isFaceDown { get; }
         public bool isUnlock { get; }
 

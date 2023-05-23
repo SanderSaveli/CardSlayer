@@ -34,6 +34,7 @@ namespace CardSystem
         {
             if (isMoving)
             {
+                StopFollowParent();
                 smoothMove.StopMove();
                 OnCardStartMove?.Invoke();
                 transform.SetParent(_canvas.transform);
@@ -61,6 +62,7 @@ namespace CardSystem
 
         public void MoveTo(Vector3 position) 
         {
+            StopFollowParent();
             smoothMove.MoveTo(position);
         }
 

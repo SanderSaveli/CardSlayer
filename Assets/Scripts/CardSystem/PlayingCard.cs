@@ -9,6 +9,7 @@ namespace CardSystem
         public event IPlayingCard.CardUnlocked OnCardUnlock;
         public event IPlayingCard.CardLocked OnCardLock;
         public event IPlayingCard.PutTopCard OnTopCardPutted;
+        public event IPlayingCard.RemoveTopCard OnTopCardRemoved;
 
         public PlayingCard() { }
         public PlayingCard(ICard card, bool isFaceDown)
@@ -31,6 +32,8 @@ namespace CardSystem
 
         public IPlayingCard bottomCard { get; private set; }
 
+        public IPlayingCard topCard { get; private set; }
+
         public bool isFaceDown { get; private set; }
 
         public bool isUnlock
@@ -52,10 +55,12 @@ namespace CardSystem
                 }
             }
         }
+
         private bool _isUnlock;
 
         public void TopCardRemoved()
         {
+            topCard = null;
             if (!isUnlock)
             {
                 UnlockCard();
@@ -66,6 +71,7 @@ namespace CardSystem
                 isFaceDown = false;
                 OnCardTurned?.Invoke();
             }
+            OnTopCardRemoved?.Invoke();
         }
         public void BottomCardChanged(IPlayingCard card)
         {
@@ -94,6 +100,7 @@ namespace CardSystem
 
         public void TopCardPutted(IPlayingCard card)
         {
+            topCard = card;
             card.BottomCardChanged(this);
             if (card.value != value - 1 || card.suit != suit)
             {

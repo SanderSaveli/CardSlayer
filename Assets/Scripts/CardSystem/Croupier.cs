@@ -35,24 +35,16 @@ namespace CardSystem
         {
             _deck.ReturnAllCardsToDeck();
             _deck = data.deck.GetData();
-            List<List<IPlayingCard>> CardsInTable = new();
-            for (int i = 0; i < data.CardsInTable.Count; i++) 
-            {
-                CardsInTable.Add(new List<IPlayingCard>());
-                for (int j = 0; j < data.CardsInTable[i].Count; j++) 
-                {
-                    CardsInTable[i].Add((IPlayingCard)data.CardsInTable[i][j].Get());
-                }
-            }
-            DealCards(CardsInTable);
+            DealCards(data.ConvertAndGetCards<IPlayingCard>());
         }
         public void DealRandom—ards()
         {
             _deck.Shuffle();
-            List<List<IPlayingCard>> cardStacks = new();
+            CardsInTable<IPlayingCard> cardStacks = new();
+            cardStacks.stacks = new();
             for (int i = 0; i < _cardSlotCount; i++)
             {
-                cardStacks.Add(new());
+                cardStacks.stacks.Add(new());
                 for (int j = 0; j < _cardsInEachSlot; j++)
                 {
                     cardStacks[i].Add( new PlayingCard(_deck.GetTopCard(), j == _cardsInEachSlot - 1 ? false : true));
@@ -64,62 +56,41 @@ namespace CardSystem
         public BattleData GetCurrentTable() 
         {
             BattleData currentTable = new();
-            currentTable.CardsInTable = new();
-            List<List<IPlayingCard>> cardStacks = new();
+            currentTable.cardsInTable.stacks = new();
             int stackNumber = 0;
-            int cardNumber;
             foreach (ICardPlaceholder cardPlaceholder in _startSlots) 
             { 
                 ITableCard currentCard = cardPlaceholder.tableCard;
-                cardNumber = 0;
-                cardStacks.Add(new());
+                currentTable.cardsInTable.stacks.Add(new());
                 while(currentCard != null) 
                 {
-                    cardStacks[stackNumber].Add(currentCard.card);
+                    currentTable.cardsInTable[stackNumber].Add(
+                        new SavebleCard(currentCard.card));
                     currentCard = currentCard.nextCard;
-                    cardNumber++;
                 }
                 stackNumber++;
-            }
-
-            for (int i = 0; i < cardStacks.Count; i++)
-            {
-                currentTable.CardsInTable.Add(new List<SavebleCard>());
-                for (int j = 0; j < cardStacks[i].Count; j++)
-                {
-                    currentTable.CardsInTable[i].Add(new SavebleCard(cardStacks[i][j]));
-                }
             }
             currentTable.deck.SetData(_deck);
             return currentTable;
         }
 
-        private void DealCards(List<List<IPlayingCard>> cardStacks)
+        private void DealCards(CardsInTable<IPlayingCard> cardStacks)
         {
             TakeAllCardsFromTable();
-            SetSlots(cardStacks.Count);
-            int stackNumber = 0;
-            int cardCount = 0;
-            foreach (List<IPlayingCard> stack in cardStacks)
-            {
-                cardCount += stack.Count;
-            }
+            SetSlots(cardStacks.stackCount);
+            CreateCardViews(cardStacks.cardCount - _tableCards.Count);
 
-            if (_tableCards.Count < cardCount)
+            int cardCount = cardStacks.cardCount;   
+            for(int i = 0; i < cardStacks.stackCount; i++) 
             {
-                CreateCardViews(cardCount - _tableCards.Count);
-            }
-            foreach (List<IPlayingCard> stack in cardStacks)
-            {
-                ICardPlaceholder topOfStack = _startSlots[stackNumber];
-                foreach (IPlayingCard card in stack)
+                ICardPlaceholder topOfStack = _startSlots[i];
+                foreach(IPlayingCard card in cardStacks[i]) 
                 {
                     cardCount--;
                     _tableCards[cardCount].SetNewCard(card);
                     topOfStack.TryPlaceCard(_tableCards[cardCount]);
                     topOfStack = _tableCards[cardCount].TopCardPlace;
                 }
-                stackNumber++;
             }
         }
         private void GenerateDeck()
@@ -160,6 +131,7 @@ namespace CardSystem
             GameObject newSlot = Instantiate(_slotPrefab, _slotsPlace);
             return newSlot.GetComponent<ICardPlaceholder>();
         }
+
         private void CreateCardViews(int count)
         {
             for (int i = 0; i < count; i++)
