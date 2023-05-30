@@ -12,6 +12,7 @@ namespace CardSystem
         [SerializeField] private GameObject _slotPrefab;
         [SerializeField] private GameObject viewPrefab;
         [SerializeField] private Canvas canvas;
+        [SerializeField] private PlaceholderSpacer _deckSpacer;
 
         private Deck<ICard> _deck;
         private List<ICardPlaceholder> _startSlots = new();
@@ -20,7 +21,6 @@ namespace CardSystem
         private void Start()
         {
             GenerateDeck();
-            SetSlots(_cardSlotCount);
             DealRandom—ards();
         }
 
@@ -28,7 +28,6 @@ namespace CardSystem
         {
             _cardsInEachSlot = cardInEachSlot;
             _cardSlotCount = cardSlotCount;
-            SetSlots(_cardSlotCount);
         }
 
         public void DealGivenCards(BattleData data)
@@ -77,7 +76,7 @@ namespace CardSystem
         private void DealCards(CardsInTable<IPlayingCard> cardStacks)
         {
             TakeAllCardsFromTable();
-            SetSlots(cardStacks.stackCount);
+            _startSlots = _deckSpacer.CreatePlaceholders(cardStacks.stackCount);
             CreateCardViews(cardStacks.cardCount - _tableCards.Count);
 
             int cardCount = cardStacks.cardCount;   
@@ -104,26 +103,6 @@ namespace CardSystem
                 }
             }
             _deck = new Deck<ICard>(cardsInDeck);
-        }
-
-        private void SetSlots(int count)
-        {
-            if (count > _startSlots.Count)
-            {
-                for (int i = _startSlots.Count; i < count; i++)
-                {
-                    _startSlots.Add(CreateNewSlot());
-                }
-            }
-            else
-            {
-                for (int i = count; i > _startSlots.Count; i--)
-                {
-                    ICardPlaceholder destroyed = _startSlots[i - 1];
-                    _startSlots.Remove(destroyed);
-                    Destroy(destroyed.rectTransform);
-                }
-            }
         }
 
         private ICardPlaceholder CreateNewSlot()

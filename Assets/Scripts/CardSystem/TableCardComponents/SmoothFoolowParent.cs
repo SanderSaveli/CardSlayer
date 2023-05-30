@@ -11,7 +11,8 @@ public class SmoothFoolowParent : MonoBehaviour
     private float percent;
     private float constZ_Pos;
 
-    private bool _isFollow;
+    private bool _isAcktive;
+    private bool _isRunning;
     public void StartFollow() 
     {
         startLocalPos = transform.localPosition;
@@ -21,19 +22,22 @@ public class SmoothFoolowParent : MonoBehaviour
         lastFrameRot = transform.rotation;
 
         constZ_Pos = startLocalPos.z;
-        _isFollow = true;
-        StopCoroutine(FollowParent());
-        StartCoroutine(FollowParent());
+        _isAcktive = true;
+        if (!_isRunning) 
+        {
+            _isRunning = true;
+            StartCoroutine(FollowParent());
+        }
     }
 
     public void StopFollow() 
     { 
-        _isFollow = false;
+        _isAcktive = false;
     }
 
     private IEnumerator FollowParent() 
     {
-        while (_isFollow) 
+        while (_isAcktive || lastDesiredPos == transform.parent.TransformPoint(startLocalPos)) 
         {
             Vector3 newDesiredPos = transform.parent.TransformPoint(startLocalPos);
             Quaternion newDesiredRot = transform.parent.rotation * startLocalRot;
@@ -64,5 +68,6 @@ public class SmoothFoolowParent : MonoBehaviour
             }
             yield return null;
         }
+        _isRunning = false;
     }
 }

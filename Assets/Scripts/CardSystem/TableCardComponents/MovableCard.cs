@@ -57,6 +57,13 @@ namespace CardSystem
             {
                 _image.raycastTarget = true;
                 OnCardEndMove?.Invoke();
+
+                RectTransform rt = _rectTransform;
+                while (rt.parent.TryGetComponent(out ICardPlaceholder component))
+                {
+                    rt = rt.parent.GetComponent<RectTransform>();
+                }
+                rt.SetAsLastSibling();
             }
         }
 

@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class SmoothMove : MonoBehaviour
 {
-    public int _speed = 6;
+    public float _speed = 0.2f;
     private Vector3 _targetPosition;
+    private Vector3 _correntVelocity;
     private bool _isMoving = false;
     public void MoveTo(Vector3 Position)
     {
@@ -22,7 +23,7 @@ public class SmoothMove : MonoBehaviour
         {
             if(transform.localPosition != _targetPosition) 
             {
-                transform.localPosition = Vector3.Lerp(transform.localPosition, _targetPosition, _speed * Time.deltaTime);
+                transform.localPosition = Vector3.SmoothDamp(transform.localPosition, _targetPosition, ref _correntVelocity, _speed);
             }
             else 
             {

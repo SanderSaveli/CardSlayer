@@ -31,7 +31,6 @@ namespace CardSystem
             List<T> values = new List<T>(_cardsInDeck);
 
             int n = values.Count;
-            Debug.Log(n);
             while (n > 1)
             {
                 n--;

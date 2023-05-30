@@ -57,7 +57,6 @@ namespace CardSystem
             {
                 _move.isMoving = true;
             }
-            _move.StopFollowParent();
         }
 
         public void MoveCard(Vector3 position)
