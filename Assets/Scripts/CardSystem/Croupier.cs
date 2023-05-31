@@ -94,15 +94,7 @@ namespace CardSystem
         }
         private void GenerateDeck()
         {
-            Queue<ICard> cardsInDeck = new();
-            for (int i = 1; i < 10; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    cardsInDeck.Enqueue(new Card((Suits)j, (CardValues)i));
-                }
-            }
-            _deck = new Deck<ICard>(cardsInDeck);
+            _deck = PlayerStartStats.GenerateStartDeck();
         }
 
         private ICardPlaceholder CreateNewSlot()

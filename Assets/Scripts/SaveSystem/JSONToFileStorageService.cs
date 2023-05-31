@@ -31,10 +31,6 @@ namespace SaveSystem
                 {
                     Debug.LogWarning("Failed to load data");
                 }
-                else
-                {
-                    Debug.Log(data);
-                }
                 callback.Invoke(data);
             }
         }
