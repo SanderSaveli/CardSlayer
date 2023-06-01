@@ -1,3 +1,5 @@
+using EventBusSystem;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -28,13 +30,13 @@ namespace CardSystem
             if (cardView.card.isUnlock) 
             { 
                 IPlayingCard curr = cardView.card;
-                int count = 0;
+                List<ICard> droppedCards = new();
                 while(curr != null) 
                 {
-                    count++;
+                    droppedCards.Add(curr);
                     curr = curr.topCard;
                 }
-                Debug.Log("You deal " + count + " damage!");
+                EventBus.RaiseEvent<IPlayerDropCardHandler>(it => it.DropCard(droppedCards));
                 croupier.DealRandom—ards();
                 return true;
             }

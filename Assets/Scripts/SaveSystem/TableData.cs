@@ -1,15 +1,15 @@
 using CardSystem;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 
 namespace SaveSystem
 {
     [System.Serializable]
-    public class BattleData
+    public class TableData
     {
-        [Serialize] public CardsInTable<SavebleCard> cardsInTable = new();
-
-        [Serialize] public SaveableDeck deck = new();
+        public CardsInTable<SavebleCard> cardsInTable = new();
+        public SaveableDeck deck = new();
+        public int cardSlotCount;
+        public int cardsInEachSlot;
 
         public void ConvertAndSetCards(CardsInTable<ICard> table) 
         {

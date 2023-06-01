@@ -18,6 +18,7 @@ namespace BattleSystem
                     _enemy.OnTakeDamage -= RefillHealth;
                 }
                 _enemy = value;
+                _enemy.OnTakeDamage+= RefillHealth;
                 SetNewEnemy();
             }
         }
@@ -32,7 +33,7 @@ namespace BattleSystem
 
         private void RefillHealth(Enemy enemy)
         {
-            healthBar.fillAmount = this.enemy.currentHealth / this.enemy.data.maxHealth;
+            healthBar.fillAmount = (float)this.enemy.currentHealth / this.enemy.data.maxHealth;
             healthText.text = this.enemy.currentHealth + "/" + this.enemy.data.maxHealth;
         }
 

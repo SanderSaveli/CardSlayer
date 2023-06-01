@@ -265,7 +265,6 @@ GameObject:
   - component: {fileID: 406712194}
   - component: {fileID: 406712196}
   - component: {fileID: 406712195}
-  - component: {fileID: 406712197}
   m_Layer: 5
   m_Name: Deck
   m_TagString: Untagged
@@ -313,8 +312,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: aa8feb48de2935f418d2f6371447209e, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: accfe8fb092a07c439dd390ca8b19712, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -331,18 +330,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 406712193}
   m_CullTransparentMesh: 1
---- !u!114 &406712197
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 406712193}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bf9c60e7c91be1478b2e6c374a4574f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &530367881
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,7 +419,7 @@ GameObject:
   - component: {fileID: 713616424}
   - component: {fileID: 713616426}
   m_Layer: 5
-  m_Name: Deck (1)
+  m_Name: AttackSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1643,12 +1630,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9a6e223098d12b4788a65af6374115f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardSlotCount: 7
-  _cardsInEachSlot: 4
-  _slotsPlace: {fileID: 187262878}
-  _slotPrefab: {fileID: 7199675181041213759, guid: 1dc7fa974bc3d644faa865dc558b9d71, type: 3}
-  viewPrefab: {fileID: 6622564541653228607, guid: fa370ff33ac7ebc459242142b3dd82b3, type: 3}
-  canvas: {fileID: 1363731953}
+  _viewPrefab: {fileID: 6622564541653228607, guid: fa370ff33ac7ebc459242142b3dd82b3, type: 3}
+  _deckPlace: {fileID: 406712194}
   _deckSpacer: {fileID: 187262879}
 --- !u!1 &1895071415
 GameObject:
@@ -1935,7 +1918,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2747ea308a3080941829dd7300727161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stubEnemy: {fileID: 11400000, guid: 05c9482d4f99f0f4093b48e1e580e687, type: 2}
   enemyView: {fileID: 1375028656}
+  croupier: {fileID: 1676993696}
 --- !u!4 &2059035881
 Transform:
   m_ObjectHideFlags: 0

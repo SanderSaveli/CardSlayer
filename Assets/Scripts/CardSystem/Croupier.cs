@@ -6,34 +6,26 @@ namespace CardSystem
 {
     public class Croupier : MonoBehaviour
     {
-        [SerializeField] private int _cardSlotCount;
-        [SerializeField] private int _cardsInEachSlot;
-        [SerializeField] private Transform _slotsPlace;
-        [SerializeField] private GameObject _slotPrefab;
-        [SerializeField] private GameObject viewPrefab;
-        [SerializeField] private Canvas canvas;
+        private int _cardSlotCount;
+        private int _cardsInEachSlot;
+        [SerializeField] private GameObject _viewPrefab;
+        [SerializeField] private Transform _deckPlace;
         [SerializeField] private PlaceholderSpacer _deckSpacer;
 
         private Deck<ICard> _deck;
         private List<ICardPlaceholder> _startSlots = new();
         private List<ITableCard> _tableCards = new();
 
-        private void Start()
-        {
-            GenerateDeck();
-            DealRandom—ards();
-        }
-
-        public void SetTableSettings(int cardInEachSlot, int cardSlotCount)
+        public void SetTableSettings(int cardInEachSlot, int cardSlotCount, Deck<ICard> deck)
         {
             _cardsInEachSlot = cardInEachSlot;
             _cardSlotCount = cardSlotCount;
+            _deck = deck;
         }
 
-        public void DealGivenCards(BattleData data)
+        public void DealGivenCards(TableData data)
         {
-            _deck.ReturnAllCardsToDeck();
-            _deck = data.deck.GetData();
+            SetTableSettings(data.cardsInEachSlot, data.cardSlotCount, data.deck.GetData());
             DealCards(data.ConvertAndGetCards<IPlayingCard>());
         }
         public void DealRandom—ards()
@@ -46,15 +38,17 @@ namespace CardSystem
                 cardStacks.stacks.Add(new());
                 for (int j = 0; j < _cardsInEachSlot; j++)
                 {
-                    cardStacks[i].Add( new PlayingCard(_deck.GetTopCard(), j == _cardsInEachSlot - 1 ? false : true));
+                    cardStacks[i].Add(new PlayingCard(_deck.GetTopCard(), j == _cardsInEachSlot - 1 ? false : true));
                 }
             }
             DealCards(cardStacks);
         }
 
-        public BattleData GetCurrentTable() 
+        public TableData GetCurrentTable() 
         {
-            BattleData currentTable = new();
+            TableData currentTable = new();
+            currentTable.cardSlotCount = _cardSlotCount;
+            currentTable.cardsInEachSlot = _cardsInEachSlot;
             currentTable.cardsInTable.stacks = new();
             int stackNumber = 0;
             foreach (ICardPlaceholder cardPlaceholder in _startSlots) 
@@ -92,22 +86,12 @@ namespace CardSystem
                 }
             }
         }
-        private void GenerateDeck()
-        {
-            _deck = PlayerStartStats.GenerateStartDeck();
-        }
-
-        private ICardPlaceholder CreateNewSlot()
-        {
-            GameObject newSlot = Instantiate(_slotPrefab, _slotsPlace);
-            return newSlot.GetComponent<ICardPlaceholder>();
-        }
 
         private void CreateCardViews(int count)
         {
             for (int i = 0; i < count; i++)
             {
-                ITableCard newCard = Instantiate(viewPrefab, canvas.transform).GetComponent<ITableCard>();
+                ITableCard newCard = Instantiate(_viewPrefab, _deckPlace.transform).GetComponent<ITableCard>();
                 _tableCards.Add(newCard);
             }
         }
@@ -117,7 +101,7 @@ namespace CardSystem
             _deck.ReturnAllCardsToDeck();
             foreach (ITableCard tableCard in _tableCards)
             {
-                tableCard.rectTransform.SetParent(transform);
+                tableCard.rectTransform.SetParent(_deckPlace);
                 tableCard.rectTransform.localPosition = Vector3.zero;
             }
         }

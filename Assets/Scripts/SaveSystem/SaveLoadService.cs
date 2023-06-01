@@ -8,12 +8,13 @@ namespace SaveSystem
     public class SaveLoadService : MonoBehaviour
     {
         public Croupier croupier;
+        public BattleController battleController;
         private JSONToFileStorageService _storageService = new();
         private string _batttleDataKey = "BattleDta";
 
         public void Save()
         {
-            BattleData data = croupier.GetCurrentTable();
+            TableData data = croupier.GetCurrentTable();
             Queue<ICard> IN = new();
             List<ICard> OUT = new();
             foreach (ICard card in data.deck._cardsInDeck)
@@ -32,7 +33,7 @@ namespace SaveSystem
 
         public void Load()
         {
-            _storageService.Load<BattleData>(_batttleDataKey, croupier.DealGivenCards);
+            _storageService.Load<TableData>(_batttleDataKey, croupier.DealGivenCards);
         }
     }
 }
