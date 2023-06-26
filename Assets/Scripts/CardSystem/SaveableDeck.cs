@@ -2,7 +2,7 @@ using CardSystem;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 
-namespace SaveSystem
+namespace Services.StorageService
 {
     [System.Serializable]
     public class SaveableDeck

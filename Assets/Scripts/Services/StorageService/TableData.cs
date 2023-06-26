@@ -1,7 +1,7 @@
 using CardSystem;
 using System.Collections.Generic;
 
-namespace SaveSystem
+namespace Services.StorageService
 {
     [System.Serializable]
     public class TableData

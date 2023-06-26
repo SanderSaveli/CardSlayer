@@ -1,17 +1,21 @@
 using CardSystem;
-using UnityEngine;
-using Newtonsoft.Json;
 using System.Collections.Generic;
+using UnityEngine;
 
-namespace SaveSystem
+namespace Services.StorageService
 {
-    public class SaveLoadService : MonoBehaviour
+    public class TableLoader : MonoBehaviour
     {
         public Croupier croupier;
         public BattleController battleController;
-        private JSONToFileStorageService _storageService = new();
+        private IStoregeService _storageService;
         private string _batttleDataKey = "BattleDta";
 
+        private void Start()
+        {
+            _storageService =
+               ServiceLockator.instance.GetService<IStoregeService>();
+        }
         public void Save()
         {
             TableData data = croupier.GetCurrentTable();

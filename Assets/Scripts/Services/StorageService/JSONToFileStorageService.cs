@@ -3,7 +3,7 @@ using System.IO;
 using UnityEngine;
 using Newtonsoft.Json;
 
-namespace SaveSystem
+namespace Services.StorageService
 {
     public class JSONToFileStorageService : IStoregeService
     {
@@ -39,5 +39,8 @@ namespace SaveSystem
         {
             return Path.Combine(Application.persistentDataPath, key);
         }
+
+        public void Initialize()
+        {   }
     }
 }
