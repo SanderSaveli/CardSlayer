@@ -1,36 +1,54 @@
-using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 namespace Services.StorageService
 {
-    public class SceneLoader : MonoBehaviour
+    public class SceneLoader : DontDestroyOnLoadSingletone<SceneLoader>
     {
-        private static SceneLoader _instance;
-        public static SceneLoader instance
+        private struct ScenePair 
         {
-            get
-            {
-                if (_instance == null)
-                {
-                    GameObject gameObject = new GameObject('[' + typeof(SceneLoader).Name + ']');
-                    _instance = gameObject.AddComponent<SceneLoader>();
-                }
-                return _instance;
-            }
+            public string sceneName;
+            public ISceneData sceneData;
         }
-
         public ISceneData currentSceneData { get; private set; }
+        private ISceneTransistor sceneTransistor;
+
+        private bool hasLazyLoading;
+        ScenePair _LazyLoading;
 
         private void Awake()
         {
-            _instance = this;
             DontDestroyOnLoad(this);
+            sceneTransistor = new SceneTransistor();
         }
 
         public void LoadScene(string sceneName, ISceneData sceneData = null)
         {
+            if (sceneTransistor.isShowen) 
+            {
+                if (sceneTransistor.isAnimationPlaying) 
+                {
+                    _LazyLoading.sceneName = sceneName;
+                    _LazyLoading.sceneData = sceneData;
+                    hasLazyLoading = true;
+                    return;
+                }
+                sceneTransistor.ExitTheTransition();
+            }
             currentSceneData = sceneData;
-            SceneManager.LoadScene(sceneName);
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        }
+        public void LoadTransistor() 
+        {
+            sceneTransistor.EnterTheTransition(RunLoadQueue);
+        }
+
+        public void RunLoadQueue() 
+        {
+            hasLazyLoading = false;
+            LoadScene(_LazyLoading.sceneName, _LazyLoading.sceneData);
         }
     }
 }

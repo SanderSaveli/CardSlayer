@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using DG.Tweening;
+using Services.StorageService;
 using UnityEngine;
 
 namespace Map
@@ -49,12 +50,13 @@ namespace Map
 
         private void SendPlayerToNode(MapNode mapNode)
         {
+            mapNode.ShowSwirlAnimation();
             Locked = lockAfterSelecting;
+            SceneLoader.instance.LoadTransistor();
             mapManager.CurrentMap.path.Add(mapNode.Node.point);
             mapManager.SaveMap();
             view.SetAttainableNodes();
             view.SetLineColors();
-            mapNode.ShowSwirlAnimation();
 
             DOTween.Sequence().AppendInterval(enterNodeDelay).OnComplete(() => EnterNode(mapNode));
         }
