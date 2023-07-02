@@ -15,6 +15,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Map.unity
     guid: 18765840a1778624bb0e478de4b7bc85
   - enabled: 1
-    path: Assets/Scenes/LoadingScreen.unity
-    guid: 5741be37925b4d644adaa6ee813f297a
+    path: Assets/Scenes/RestSite.unity
+    guid: 1034308516e4b324395d3dd67620dc2d
+  - enabled: 1
+    path: Assets/Scenes/Alchemy Lab.unity
+    guid: 1a064bae9602bb24b97ca556c2b9fb09
+  - enabled: 1
+    path: Assets/Scenes/Shop.unity
+    guid: 0367f23b2d5b6f54580b0fd923f24757
   m_configObjects: {}

@@ -74,16 +74,22 @@ namespace Map
                     FindObjectOfType<MapController>().Fight();
                     break;
                 case NodeType.EliteEnemy:
+                    FindObjectOfType<MapController>().Fight();
                     break;
                 case NodeType.RestSite:
+                    SceneLoader.instance.LoadScene(SceneNames.RestSite);
                     break;
-                case NodeType.Treasure:
+                case NodeType.AlchemyLab:
+                    SceneLoader.instance.LoadScene(SceneNames.AlchemyLab);
                     break;
                 case NodeType.Store:
+                    SceneLoader.instance.LoadScene(SceneNames.Shop);
                     break;
                 case NodeType.Boss:
+                    FindObjectOfType<MapController>().Fight();
                     break;
                 case NodeType.Mystery:
+                    SceneLoader.instance.LoadScene(SceneNames.Shop);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

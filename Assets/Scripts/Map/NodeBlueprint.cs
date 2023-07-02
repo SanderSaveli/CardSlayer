@@ -7,7 +7,7 @@ namespace Map
         MinorEnemy,
         EliteEnemy,
         RestSite,
-        Treasure,
+        AlchemyLab,
         Store,
         Boss,
         Mystery
