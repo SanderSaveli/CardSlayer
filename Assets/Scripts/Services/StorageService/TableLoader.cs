@@ -1,6 +1,7 @@
 using CardSystem;
 using System.Collections.Generic;
 using UnityEngine;
+using BattleSystem;
 
 namespace Services.StorageService
 {

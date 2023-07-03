@@ -1,3 +1,4 @@
+using BattleSystem;
 using EventBusSystem;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ namespace CardSystem
 {
     public class AttackSlot : MonoBehaviour, ICardPlaceholder, IDropHandler
     {
-        [SerializeField] private Croupier croupier;
+        [SerializeField] private BattleController _battleController;
         public RectTransform rectTransform { get; private set; }
 
         public ITableCard tableCard { get; private set; }
@@ -36,8 +37,8 @@ namespace CardSystem
                     droppedCards.Add(curr);
                     curr = curr.topCard;
                 }
+                _battleController.AttackByCard(droppedCards);
                 EventBus.RaiseEvent<IPlayerDropCardHandler>(it => it.DropCard(droppedCards));
-                croupier.DealRandom—ards();
                 return true;
             }
             return false;
