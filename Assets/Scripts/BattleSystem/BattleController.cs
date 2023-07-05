@@ -2,14 +2,16 @@ using CardSystem;
 using Services.StorageService;
 using System.Collections.Generic;
 using UnityEngine;
-
+using BattleSystem.Field;
 namespace BattleSystem
 {
     public class BattleController : MonoBehaviour
     {
-        [SerializeField] private EnemyData _stubEnemy;
-        [SerializeField] private EnemyView _enemyView;
+        [SerializeField] private EntityData _stubEnemy;
+        [SerializeField] private EntityView _enemyView;
         [SerializeField] private Croupier _croupier;
+        [SerializeField] private FillableBoundedGrid fieldGrid;
+        private Field.Field _field;
         public Enemy enemy { get; private set; }
         public PlayerInfo playerInfo { get; private set; }
 
@@ -17,14 +19,13 @@ namespace BattleSystem
         private void Awake()
         {
             BattleSceneData sceneData = (BattleSceneData)SceneLoader.instance.currentSceneData;
+            _field = new Field.Field(fieldGrid);
             if (sceneData == null)
             {
                 sceneData = GenerateStubSceneData();
             }
-            enemy = new Enemy(sceneData.enemy);
-            _enemyView.enemy = enemy;
             playerInfo = sceneData.playerInfo;
-            enemy.OnDie += EnemyDie;
+            CreateViewToentity(sceneData.enemy);
         }
 
         private void Start()
@@ -47,6 +48,13 @@ namespace BattleSystem
             SceneLoader.instance.LoadScene(SceneNames.Map);
         }
 
+        private void CreateViewToentity(EntityData entity) 
+        {
+            enemy = new Enemy(entity, new Vector2Int(3, 1), _field);
+            EntityView newView = Instantiate(_enemyView.gameObject).GetComponent<EntityView>();
+            newView.entity = enemy;
+            enemy.OnDie += EnemyDie;
+        }
         private BattleSceneData GenerateStubSceneData()
         {
             Debug.LogWarning("Loaded stub scene data!");

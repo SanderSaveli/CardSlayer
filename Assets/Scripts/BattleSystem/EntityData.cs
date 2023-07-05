@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace BattleSystem
 {
-    [CreateAssetMenu(fileName = "EnemyData", menuName = "Battle/new EnemyData")]
-    public class EnemyData : ScriptableObject
+    [CreateAssetMenu(fileName = "EntityData", menuName = "Battle/new EntityData")]
+    public class EntityData : ScriptableObject
     {
         public string enumyName;
         public Sprite portrait;

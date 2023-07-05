@@ -1,3 +1,4 @@
+using TMPro.Examples;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,6 +32,12 @@ public class BoundedGrid : MonoBehaviour
     }
     protected virtual void UpdateGrid()
     {
+        if(_rectTransform == null) 
+        {
+            _rectTransform = GetComponent<RectTransform>();
+            _grid = GetComponent<GridLayoutGroup>();
+            startDeltaSize = _rectTransform.sizeDelta;
+        }
         _rectTransform.sizeDelta = startDeltaSize;
         CalculateWidthAndHeight(out float areaWidth, out float areaHeight);
         float widthCoefficent = areaWidth / collums;

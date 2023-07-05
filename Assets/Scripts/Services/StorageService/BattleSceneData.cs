@@ -10,10 +10,10 @@ namespace Services
             public Type dataType { get => typeof(BattleSceneData); }
 
             //public BattleSceneData()
-            public EnemyData enemy;
+            public EntityData enemy;
             public PlayerInfo playerInfo;
 
-            public BattleSceneData(EnemyData enemy, PlayerInfo playerInfo)
+            public BattleSceneData(EntityData enemy, PlayerInfo playerInfo)
             {
                 this.enemy = enemy;
                 this.playerInfo = playerInfo;
