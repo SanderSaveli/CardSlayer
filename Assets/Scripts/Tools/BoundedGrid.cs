@@ -2,52 +2,67 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
-[ExecuteAlways]
 [RequireComponent(typeof(GridLayoutGroup))]
 [RequireComponent(typeof(RectTransform))]
 public class BoundedGrid : MonoBehaviour
 {
-    [SerializeField] private int _collums = 1;
-    [SerializeField] private int _rows = 1;
+    public int collums = 1;
+    public int rows = 1;
 
     public RectOffset paddings;
     public Vector2 spacing;
 
-    private RectTransform _rectTransform;
+    protected RectTransform _rectTransform;
     private GridLayoutGroup _grid;
+    private Vector2 startDeltaSize;
 
     private void OnEnable()
     {
         _rectTransform = GetComponent<RectTransform>();
         _grid = GetComponent<GridLayoutGroup>();
+        startDeltaSize = _rectTransform.sizeDelta;
     }
 
     private void OnValidate()
     {
+        math.clamp(collums, 0, 100);
+        math.clamp(rows, 0, 100);
         UpdateGrid();
     }
-    private void UpdateGrid()
+    protected virtual void UpdateGrid()
     {
+        _rectTransform.sizeDelta = startDeltaSize;
         CalculateWidthAndHeight(out float areaWidth, out float areaHeight);
-        float widthCoefficent = areaWidth / _collums;
-        float heightCoefficent = areaHeight / _rows;
+        float widthCoefficent = areaWidth / collums;
+        float heightCoefficent = areaHeight / rows;
 
         float sqareSide = heightCoefficent > widthCoefficent ?
             CalculateSizebyWidth(areaWidth) :
             CalculateSizebyHeight(areaHeight);
         SetGridPreferences(new Vector2(sqareSide, sqareSide));
+        CutFreeSpace(sqareSide);
+    }
+
+    private void CutFreeSpace(float sqareSide) 
+    {
+        Vector2 occupiedArea = new();
+        occupiedArea.x = paddings.right + paddings.left + (spacing.x * (collums - 1)) + sqareSide * collums;
+        occupiedArea.y = paddings.top + paddings.bottom + (spacing.y * (rows - 1)) + sqareSide * rows;
+        CalculateWidthAndHeight(out float areaWidth, out float areaHeight);
+        Vector2 emptySpace = new Vector2(areaWidth - occupiedArea.x, areaHeight - occupiedArea.y);
+        _rectTransform.sizeDelta -= emptySpace;
     }
 
     private float CalculateSizebyHeight(float height)
     {
-        float reductionFactor = paddings.top + paddings.bottom + (spacing.y* (_rows -1));
-        return (height - reductionFactor) / _rows;
+        float reductionFactor = paddings.top + paddings.bottom + (spacing.y* (rows -1));
+        return (height - reductionFactor) / rows;
     }
 
     private float CalculateSizebyWidth(float width)
     {
-        float reductionFactor = paddings.right + paddings.left + (spacing.x * (_collums - 1));
-        return (width - reductionFactor) / _collums;
+        float reductionFactor = paddings.right + paddings.left + (spacing.x * (collums - 1));
+        return (width - reductionFactor) / collums;
     }
 
 
