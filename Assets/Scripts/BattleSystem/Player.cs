@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace BattleSystem
 {
-    public class Enemy : IFieldEntity
+    public class Player : IFieldEntity
     {
-        public EntityDataSO data { get; set; }
+        public EntityDataSO data { get; private set; }
 
         public int currentHealth { get; private set; }
 
@@ -20,35 +20,14 @@ namespace BattleSystem
 
         private Field.Field field;
 
-        public Enemy(EntityDataSO data, Vector2Int position, Field.Field field)
+        public Player(PlayerInfo info, Vector2Int position, Field.Field field)
         {
-            this.data = data;
-            currentHealth = data.maxHealth;
+            data = info.playerData;
+            currentHealth = info.currentHealth;
             this.position = position;
             this.field = field;
             ocupatedCells = new List<ICell>();
             SetOcupatedCells();
-        }
-
-        public void MakeDamage(int damage)
-        {
-            currentHealth = Mathf.Clamp(currentHealth - damage, 0, data.maxHealth);
-            OnTakeDamage?.Invoke(this);
-            if (currentHealth <= 0)
-            {
-                OnDie?.Invoke(this);
-            }
-        }
-
-        public bool TryMove(Vector2Int toPosition)
-        {
-            if (field[toPosition].TryPlaceOnCell(this))
-            {
-                position = toPosition;
-                SetOcupatedCells();
-                return true;
-            }
-            return false;
         }
 
         private void SetOcupatedCells()

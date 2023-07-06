@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MapController : MonoBehaviour
 {
-    public EntityData enemy;
+    public EntityDataSO enemy;
     public void ToMenu()
     {
         SceneLoader.instance.LoadScene(SceneNames.MainMenu);

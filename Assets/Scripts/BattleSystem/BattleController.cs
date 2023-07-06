@@ -1,18 +1,20 @@
+using BattleSystem.Field;
 using CardSystem;
 using Services.StorageService;
 using System.Collections.Generic;
 using UnityEngine;
-using BattleSystem.Field;
+
 namespace BattleSystem
 {
     public class BattleController : MonoBehaviour
     {
-        [SerializeField] private EntityData _stubEnemy;
+        [SerializeField] private MinorEnemyDatabaseSO _minorEnemies;
         [SerializeField] private EntityView _enemyView;
         [SerializeField] private Croupier _croupier;
         [SerializeField] private FillableBoundedGrid fieldGrid;
         private Field.Field _field;
         public Enemy enemy { get; private set; }
+        public Player player { get; private set; }
         public PlayerInfo playerInfo { get; private set; }
 
 
@@ -25,7 +27,8 @@ namespace BattleSystem
                 sceneData = GenerateStubSceneData();
             }
             playerInfo = sceneData.playerInfo;
-            CreateViewToentity(sceneData.enemy);
+            CreateViewToEntity(sceneData.enemy);
+            CreateViewToPlayer();
         }
 
         private void Start()
@@ -45,25 +48,39 @@ namespace BattleSystem
         }
         public void BackToMap()
         {
+            SceneLoader.instance.LoadTransistor();
             SceneLoader.instance.LoadScene(SceneNames.Map);
         }
 
-        private void CreateViewToentity(EntityData entity) 
+        private void CreateViewToEntity(EntityDataSO entity)
         {
-            enemy = new Enemy(entity, new Vector2Int(3, 1), _field);
+            enemy = new Enemy(entity, new Vector2Int(3, 0), _field);
             EntityView newView = Instantiate(_enemyView.gameObject).GetComponent<EntityView>();
             newView.entity = enemy;
             enemy.OnDie += EnemyDie;
         }
+        private void CreateViewToPlayer()
+        {
+            this.player = new Player(playerInfo, new Vector2Int(0, 0), _field);
+            EntityView newView = Instantiate(_enemyView.gameObject).GetComponent<EntityView>();
+            newView.entity = player;
+        }
         private BattleSceneData GenerateStubSceneData()
         {
             Debug.LogWarning("Loaded stub scene data!");
-            return new BattleSceneData(_stubEnemy, new PlayerInfo());
+            int index = Random.Range(0, _minorEnemies._minorEnemies.Count);
+            return new BattleSceneData(_minorEnemies._minorEnemies[index], new PlayerInfo());
         }
 
         private void EnemyDie(Enemy enemy)
         {
             Debug.Log("You kill enemy!");
+            BackToMap();
+        }
+
+        private void PlayerDie(Enemy enemy)
+        {
+            Debug.Log("You dead!");
             BackToMap();
         }
 

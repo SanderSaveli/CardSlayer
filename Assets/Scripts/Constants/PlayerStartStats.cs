@@ -1,10 +1,11 @@
 using CardSystem;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerStartStats
 {
-    public static readonly int maxHealh = 100;
-    public static readonly int currentHealth = 100;
+    public static BattleSystem.EntityDataSO playerData { get => GenerateStartPlayerData(); }
+    public static readonly int currentHealth = playerData.maxHealth;
     public static readonly int startSlots = 7;
     public static readonly int cardsInEatchSlot = 4;
 
@@ -21,5 +22,9 @@ public class PlayerStartStats
             }
         }
         return new Deck<ICard>(cardsInDeck);
+    }
+    public static BattleSystem.EntityDataSO GenerateStartPlayerData() 
+    {
+        return (BattleSystem.EntityDataSO)Resources.Load("Player");
     }
 }

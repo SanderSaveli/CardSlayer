@@ -1269,7 +1269,7 @@ MonoBehaviour:
     m_Top: 1
     m_Bottom: 1
   m_ChildAlignment: 0
-  m_StartCorner: 0
+  m_StartCorner: 2
   m_StartAxis: 0
   m_CellSize: {x: 45.073334, y: 45.073334}
   m_Spacing: {x: 2, y: 2}
@@ -2798,7 +2798,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2747ea308a3080941829dd7300727161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stubEnemy: {fileID: 11400000, guid: 05c9482d4f99f0f4093b48e1e580e687, type: 2}
+  _minorEnemies: {fileID: 11400000, guid: d198e7136e19a1c44b3401e8be102d55, type: 2}
   _enemyView: {fileID: 6332865813866893668, guid: e7309b5dc09e1744bb08a94cdc18c484, type: 3}
   _croupier: {fileID: 1676993696}
   fieldGrid: {fileID: 900100373}

@@ -1,4 +1,5 @@
 using BattleSystem;
+using UnityEngine;
 using System;
 
 namespace Services 
@@ -10,11 +11,15 @@ namespace Services
             public Type dataType { get => typeof(BattleSceneData); }
 
             //public BattleSceneData()
-            public EntityData enemy;
+            public EntityDataSO enemy;
             public PlayerInfo playerInfo;
 
-            public BattleSceneData(EntityData enemy, PlayerInfo playerInfo)
+            public BattleSceneData(EntityDataSO enemy, PlayerInfo playerInfo)
             {
+                if(enemy == null) 
+                {
+                    Debug.LogWarning("Enemy data is null!");
+                }
                 this.enemy = enemy;
                 this.playerInfo = playerInfo;
             }

@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: EntityData
-  m_EditorClassIdentifier: Assembly-CSharp:BattleSystem:EntityData
-  enumyName: 
-  portrait: {fileID: 0}
-  maxHealth: 0
+  m_Script: {fileID: 11500000, guid: cd96200a0eae4254abaf455ce3b65eed, type: 3}
+  m_Name: Player
+  m_EditorClassIdentifier: 
+  enumyName: Player
+  portrait: {fileID: 21300000, guid: 755a75212e169ef418f041448960616b, type: 3}
+  maxHealth: 40

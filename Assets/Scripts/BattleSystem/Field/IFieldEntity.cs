@@ -13,7 +13,7 @@ namespace BattleSystem.Field
         public event statsChange OnMove;
         #endregion
 
-        public EntityData data { get; set; }
+        public EntityDataSO data { get; }
         public int currentHealth { get;}
         public Vector2Int position { get; }
         public List<ICell> ocupatedCells { get; }

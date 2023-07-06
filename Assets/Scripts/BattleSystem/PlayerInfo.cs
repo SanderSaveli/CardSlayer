@@ -4,15 +4,15 @@ namespace BattleSystem
 {
     public class PlayerInfo
     {
-        public int maxHealh;
+        public EntityDataSO playerData;
         public int currentHealth;
         public int startSlots;
         public int cardsInEatchSlot;
         public Deck<ICard> deck;
 
-        public PlayerInfo(int maxHealh, int currentHealth, int startSlots, int cardsInEatchSlot, Deck<ICard> deck)
+        public PlayerInfo(EntityDataSO playerData, int currentHealth, int startSlots, int cardsInEatchSlot, Deck<ICard> deck)
         {
-            this.maxHealh = maxHealh;
+            this.playerData = playerData;
             this.currentHealth = currentHealth;
             this.startSlots = startSlots;
             this.cardsInEatchSlot = cardsInEatchSlot;
@@ -21,7 +21,7 @@ namespace BattleSystem
 
          public PlayerInfo() 
         {
-            this.maxHealh = PlayerStartStats.maxHealh;
+            this.playerData = PlayerStartStats.playerData;
             this.currentHealth = PlayerStartStats.currentHealth;
             this.startSlots = PlayerStartStats.startSlots;
             this.cardsInEatchSlot = PlayerStartStats.cardsInEatchSlot;
